@@ -288,3 +288,29 @@ button:focus-visible {
   font-size: 0.78rem;
   color: var(--ink-soft);
 }
+
+
+/* Filters */
+.todo-filters {
+  display: flex;
+  gap: 8px;
+  margin: 14px 0;
+  justify-content: center;
+}
+
+.todo-filters button {
+  background: transparent;
+  color: var(--ink-soft);
+  border: 1px solid var(--rule);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.todo-filters button:hover,
+.todo-filters button.active {
+  color: var(--ink);
+  border-color: var(--ink);
+  background: var(--paper);
+}
