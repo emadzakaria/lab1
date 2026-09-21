@@ -1,32 +1,59 @@
 // TodoList.jsx
 import TodoItem from './TodoItem';
 
-export default function TodoList({ todos, loading, onToggle, onRename, onRemove }) {
-  if (loading) return <p className="todo-loading">Loading tasks…</p>;
-
-  if (todos.length === 0) {
-    return <p className="todo-empty">No tasks yet — add one above.</p>;
-  }
-
-  const doneCount = todos.filter(t => t.done).length;
+export default function TodoList({
+  todos,
+  loading,
+  filter,
+  onFilterChange,
+  onToggle,
+  onRename,
+  onRemove
+}) {
+  const filters = [
+    { value: 'all', label: 'All' },
+    { value: 'active', label: 'Active' },
+    { value: 'done', label: 'Done' }
+  ];
 
   return (
     <>
-      <ul className="todo-list">
-        {todos.map(todo => (
-          <TodoItem
-            key={todo._id}
-            todo={todo}
-            onToggle={onToggle}
-            onRename={onRename}
-            onRemove={onRemove}
-          />
+      <div className="todo-filters" role="group" aria-label="Filter todos">
+        {filters.map(option => (
+          <button
+            key={option.value}
+            type="button"
+            className={filter === option.value ? 'active' : ''}
+            onClick={() => onFilterChange(option.value)}
+          >
+            {option.label}
+          </button>
         ))}
-      </ul>
-      <div className="receipt-footer">
-        <span>{todos.length} item{todos.length === 1 ? '' : 's'}</span>
-        <span>{doneCount} of {todos.length} done</span>
       </div>
+
+      {loading ? (
+        <p className="todo-loading">Loading tasks…</p>
+      ) : todos.length === 0 ? (
+        <p className="todo-empty">No tasks match this filter.</p>
+      ) : (
+        <>
+          <ul className="todo-list">
+            {todos.map(todo => (
+              <TodoItem
+                key={todo._id}
+                todo={todo}
+                onToggle={onToggle}
+                onRename={onRename}
+                onRemove={onRemove}
+              />
+            ))}
+          </ul>
+          <div className="receipt-footer">
+            <span>{todos.length} item{todos.length === 1 ? '' : 's'}</span>
+            <span>{todos.filter(t => t.done).length} of {todos.length} done</span>
+          </div>
+        </>
+      )}
     </>
   );
 }
